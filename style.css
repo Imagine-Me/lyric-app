@@ -120,3 +120,7 @@ section.body .lyric-list {
     font-weight: 400;
     font-size: 18px;
 }
+.card>.details div:last-child{
+    color: gray;
+    font-size: 14px;
+}

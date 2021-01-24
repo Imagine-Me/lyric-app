@@ -40,15 +40,16 @@ const app = {
     },
     renderMusicList() {
         let html = this.musicList
-            .reduce((accumulator, list) => accumulator + this.generateCard(list.title, list.album.cover_small)
+            .reduce((accumulator, list) => accumulator + this.generateCard(list.title, list.album.cover_small,list.artist.name)
                 , '')
         document.querySelector('.lyric-list').innerHTML = html
     },
-    generateCard(name, image) {
+    generateCard(name, image, artist) {
         return `<div class="card">
             <img class="image" src="${image}" alt="">
             <div class="details">
-                ${name}
+                <div>${name}</div>
+                <div>${artist}</div>
             </div>
         </div>`
     }
