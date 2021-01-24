@@ -27,13 +27,7 @@ body {
 
 section.header {
     padding: 10px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
     text-align: center;
-    z-index: 100;
-    background-color: rgb(245, 245, 245);
 }
 
 .logo {
@@ -54,7 +48,8 @@ section.body {
 }
 
 section.body .lyric-list {
-    margin: 100px 0 20px 0;
+    margin-top: 100px;
+    padding-bottom: 20px;
 }
 
 .search-box {
@@ -69,7 +64,7 @@ section.body .lyric-list {
 
 .search-container {
     position: relative;
-    top: calc(50% - 50px);
+    top: calc(50% - 140px);
     -moz-transition: all 1s;
     -webkit-transition: all 1s;
     -o-transition: all 1s;
@@ -78,10 +73,11 @@ section.body .lyric-list {
 }
 
 .animate-search-box {
-    top: 85px;
+    top: 0;
     position: fixed;
     margin: auto;
     padding: 15px 0;
+    z-index: 100;
     left: 0;
     right: 0;
     background-color: rgb(245, 245, 245);
@@ -106,6 +102,14 @@ section.body .lyric-list {
     display: flex;
     align-items: center;
     margin-bottom: 7px;
+    -moz-transition: all .5s;
+    -webkit-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+.card:hover{
+    cursor: pointer;
+    transform: scale(1.02);
 }
 
 .card>.image {
