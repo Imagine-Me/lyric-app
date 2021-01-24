@@ -9,7 +9,7 @@ body {
     padding: 0;
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
-    background-color: rgba(238, 238, 238, 0.651);
+    background-color: rgb(245, 245, 245);
 }
 
 .bg-primary {
@@ -32,6 +32,8 @@ section.header {
     top: 0;
     right: 0;
     text-align: center;
+    z-index: 100;
+    background-color: rgb(245, 245, 245);
 }
 
 .logo {
@@ -52,26 +54,41 @@ section.body {
 }
 
 section.body .lyric-list {
-    margin-top: 80px;
+    margin: 100px 0 20px 0;
 }
 
 .search-box {
     background-color: white;
     border-radius: 50px;
     padding: 20px;
-    position: absolute;
+
     left: 15px;
     right: 15px;
     box-shadow: 1px 1px 12px rgba(128, 128, 128, 0.157);
+}
+
+.search-container {
+    position: relative;
     top: calc(50% - 50px);
     -moz-transition: all 1s;
     -webkit-transition: all 1s;
     -o-transition: all 1s;
     transition: all 1s;
+    text-align: center;
 }
 
 .animate-search-box {
     top: 85px;
+    position: fixed;
+    margin: auto;
+    padding: 15px 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(245, 245, 245);
+}
+.animate-search-box .search-box{
+    max-width: 722px;
+    margin: auto;
 }
 
 .search-box input {
@@ -88,6 +105,7 @@ section.body .lyric-list {
     box-shadow: 1px 1px 12px rgba(128, 128, 128, 0.157);
     display: flex;
     align-items: center;
+    margin-bottom: 7px;
 }
 
 .card>.image {
