@@ -3,6 +3,7 @@ const BASE_URL = 'https://api.lyrics.ovh/'
 
 const app = {
     musicList: [],
+    musicCard: [],
     searchInput: document.getElementById('search-input'),
     debounceTimer: null,
     init() {
@@ -22,36 +23,66 @@ const app = {
             if (userInput.length === 0)
                 document.querySelector('.lyric-list').innerHTML = ''
             clearTimeout(this.debounceTimer)
-            this.debounce('suggest', userInput)
+            this.debounce('suggest', userInput, this.getMusicList)
         })
-        // this.debounce()
+
+        document.getElementById('modal-close').addEventListener('click', function () {
+            document.getElementById('main-body').classList.remove('overflow-hidden')
+            document.getElementById('modal').classList.add('d-none')
+        })
     },
-    getLyricData(param1, param2) {
+    getMusicList(param1, param2) {
         fetch(`${BASE_URL}${param1}/${param2}`)
             .then(p => p.json())
-            .then(d => this.musicList = d.data)
-            .then(() => this.renderMusicList())
+            .then(d => app.musicList = d.data)
+            .then(() => app.renderMusicList())
+            .then(() => app.attachListeners())
             .catch(err => document.querySelector('.lyric-list').innerHTML = '')
     },
-    debounce(param1, param2) {
+    debounce(param1, param2, callback) {
         this.debounceTimer = setTimeout(() => {
-            this.getLyricData(param1, param2)
-        }, 1000)
+            callback(param1, param2)
+        }, 500)
     },
     renderMusicList() {
         let html = this.musicList
-            .reduce((accumulator, list) => accumulator + this.generateCard(list.title, list.album.cover_small,list.artist.name)
+            .reduce((accumulator, list) => accumulator + this.generateCard(list.title, list.album.cover_small, list.artist.name)
                 , '')
         document.querySelector('.lyric-list').innerHTML = html
     },
+    getLyrics(artist, name) {
+        fetch(`${BASE_URL}v1/${artist}/${name}`)
+            .then(p => p.json())
+            .then(a => a.lyrics)
+            .then(lyrics => lyrics.split('\n'))
+            .then(splitterLyrics => splitterLyrics.reduce((accumulator, value) => accumulator + `<p>${value}</p>`, ''))
+            .then(html => document.getElementById('modal-lyrics').innerHTML = html)
+            .catch(e => console.log(e))
+    },
     generateCard(name, image, artist) {
-        return `<div class="card">
+        return `<div class="card" data-artist="${artist}" data-name="${name}">
             <img class="image" src="${image}" alt="">
             <div class="details">
                 <div>${name}</div>
                 <div>${artist}</div>
             </div>
         </div>`
+    },
+    attachListeners() {
+        this.musicCard.forEach(element => element.removeEventListener('click', this.cardListener))
+        const cards = document.querySelectorAll('.card')
+        this.musicCard = Array.from(cards)
+        this.musicCard.forEach((element, index) => element.addEventListener('click', () => this.cardListener(element, index)))
+    },
+    cardListener(element, index) {
+        const artistName = element.getAttribute('data-artist')
+        const musicName = element.getAttribute('data-name')
+        document.getElementById('main-body').classList.add('overflow-hidden')
+        document.getElementById('modal').classList.remove('d-none')
+        document.getElementById('modal-album-image').setAttribute('src', this.musicList[index].album.cover_medium)
+        document.getElementById('modal-song-name').innerHTML = this.musicList[index].title
+        document.getElementById('modal-artist-name').innerHTML = this.musicList[index].artist.name
+        this.getLyrics(artistName, musicName)
     }
 }
 

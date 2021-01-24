@@ -12,6 +12,10 @@ body {
     background-color: rgb(245, 245, 245);
 }
 
+.overflow-hidden{
+    overflow: hidden;
+}
+
 .bg-primary {
     background-color: #ff5252;
 }
@@ -25,7 +29,7 @@ body {
 }
 
 
-section.header {
+div.header {
     padding: 10px;
     text-align: center;
 }
@@ -82,7 +86,8 @@ section.body .lyric-list {
     right: 0;
     background-color: rgb(245, 245, 245);
 }
-.animate-search-box .search-box{
+
+.animate-search-box .search-box {
     max-width: 722px;
     margin: auto;
 }
@@ -107,7 +112,8 @@ section.body .lyric-list {
     -o-transition: all .5s;
     transition: all .5s;
 }
-.card:hover{
+
+.card:hover {
     cursor: pointer;
     transform: scale(1.02);
 }
@@ -124,7 +130,63 @@ section.body .lyric-list {
     font-weight: 400;
     font-size: 18px;
 }
-.card>.details div:last-child{
+
+.card>.details div:last-child {
     color: gray;
     font-size: 14px;
+}
+
+.lyric-modal {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.274);
+    z-index: 1000;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.lyric-modal .modal {
+    margin: 30px auto;
+    padding: 0 20px 20px;
+    border-radius: 5px;
+    background-color: white;
+    max-width: 760px;
+}
+
+.lyric-modal .modal .header {
+    font-size: 24px;
+    text-align: right;
+}
+
+.lyric-modal .modal .header:hover {
+    cursor: pointer;
+}
+
+.lyric-modal .modal .body {
+    text-align: center;
+}
+
+#modal-album-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+#modal-song-name {
+    font-size: 22px;
+    font-weight: 800;
+}
+#modal-artist-name{
+    font-size: 14px;
+    color: gray;
+}
+#modal-lyrics p{
+    font-size: 18px;
+}
+
+.d-none {
+    display: none;
 }

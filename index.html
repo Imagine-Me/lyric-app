@@ -11,7 +11,7 @@
         rel="stylesheet">
 </head>
 
-<body>
+<body id="main-body">
 
     <section class="body container">
         <div class="search-container">
@@ -27,6 +27,22 @@
         <div class="lyric-list">
         </div>
     </section>
+
+    <div id="modal" class="lyric-modal d-none">
+        <div class="modal">
+            <div id="modal-close" class="header">
+                &times;
+            </div>
+            <div class="body">
+                <img id="modal-album-image" src="" />
+                <div id="modal-song-name">The scientist</div>
+                <div id="modal-artist-name">Coldplay</div>
+                <div id="modal-lyrics">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="/scripts.js"></script>
 </body>
