@@ -16,14 +16,15 @@ const app = {
 
         this.searchInput.addEventListener('keyup', () => {
             let userInput = this.searchInput.value
+            clearTimeout(this.debounceTimer)
             if (userInput.length === 1) {
                 const parentDiv = this.searchInput.parentElement.parentElement
                 parentDiv.classList.add('animate-search-box')
             }
             if (userInput.length === 0)
                 document.querySelector('.lyric-list').innerHTML = ''
-            clearTimeout(this.debounceTimer)
-            this.debounce('suggest', userInput, this.getMusicList)
+            if (userInput.length > 0)
+                this.debounce('suggest', userInput, this.getMusicList)
         })
 
         document.getElementById('modal-close').addEventListener('click', function () {
@@ -32,12 +33,13 @@ const app = {
         })
     },
     getMusicList(param1, param2) {
+        document.querySelector('.lyric-list').innerHTML = '<div class="lds-facebook"><div></div><div></div><div></div></div>'
         fetch(`${BASE_URL}${param1}/${param2}`)
             .then(p => p.json())
             .then(d => app.musicList = d.data)
             .then(() => app.renderMusicList())
             .then(() => app.attachListeners())
-            .catch(err => document.querySelector('.lyric-list').innerHTML = '')
+            .catch(err => document.querySelector('.lyric-list').innerHTML = 'An error occurred')
     },
     debounce(param1, param2, callback) {
         this.debounceTimer = setTimeout(() => {
@@ -51,13 +53,15 @@ const app = {
         document.querySelector('.lyric-list').innerHTML = html
     },
     getLyrics(artist, name) {
+        document.getElementById('modal-lyrics').innerHTML = '<div class="lds-facebook"><div></div><div></div><div></div></div>'
         fetch(`${BASE_URL}v1/${artist}/${name}`)
             .then(p => p.json())
-            .then(a => a.lyrics)
+            .then(data => data.lyrics)
+            .then(lyrics => lyrics === "" ? Promise.reject('') : lyrics)
             .then(lyrics => lyrics.split('\n'))
             .then(splitterLyrics => splitterLyrics.reduce((accumulator, value) => accumulator + `<p>${value}</p>`, ''))
             .then(html => document.getElementById('modal-lyrics').innerHTML = html)
-            .catch(e => console.log(e))
+            .catch(e => document.getElementById('modal-lyrics').innerHTML = "An error occurred")
     },
     generateCard(name, image, artist) {
         return `<div class="card" data-artist="${artist}" data-name="${name}">
