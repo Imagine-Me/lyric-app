@@ -19,6 +19,10 @@ h3 {
     min-height: 100vh;
 }
 
+.text-center {
+    text-align: center;
+}
+
 input {
     width: 100%;
     font-size: 16px;
@@ -146,7 +150,7 @@ input {
 }
 
 .card-container {
-    padding: 0;
+    padding: 5px 0;
     width: 100%;
     max-width: auto;
 }
@@ -164,6 +168,8 @@ input {
     width: 70px;
     border-radius: 50%;
     shape-outside: circle();
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .card-container .card .header-card {
@@ -171,32 +177,56 @@ input {
     align-items: center;
     width: 60%;
 }
+
 .card-container .card .footer {
     display: flex;
     align-items: center;
     width: 40%;
     justify-content: flex-end;
 }
-.card-container .card .footer button{
+
+.card-container .card .footer a {
     border: 1px solid #ec407a;
     color: #ec407a;
     background-color: transparent;
+    text-decoration: none;
+    font-size: 12px;
     padding: 7px 12px;
+}
+
+.card-container .card .footer a:hover {
+    cursor: pointer;
+    color: white;
+    background-color: #ec407a;
 }
 
 .card-container .card .title-holder {
     padding-left: 15px;
 }
 
+.card-container .card .title-holder .title {
+    line-height: 22px;
+    height: 22px;
+    overflow: hidden;
+}
+
 .card-container .card .title-holder .artist {
     color: grey;
     font-size: 14px;
+    line-height: 17px;
+    height: 17px;
+    overflow: hidden;
+}
+
+.hover-item:hover{
+    cursor: pointer;
 }
 
 @media(min-width: 760px) {
     .search-box {
         flex-direction: row;
     }
+
     .search-box .input {
         width: 50%;
     }
@@ -209,11 +239,13 @@ input {
 
     .card-holder {
         flex-flow: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
     .card-container {
         padding: 15px;
-        width: 25%;
+        width: 18%;
         min-width: 300px;
     }
 
@@ -221,14 +253,20 @@ input {
         height: 200px;
         width: 100%;
         border-radius: 0;
+        background-position: top center;
+        background-size: cover;
+
     }
+
     .card-container .card .header-card {
         flex-flow: column;
         width: 100%;
     }
+
     .card-container .card {
         flex-flow: column;
     }
+
     .card-container .card .footer {
         flex-flow: row;
         width: 100%;
