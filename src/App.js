@@ -1,11 +1,16 @@
+import { Route, Switch } from 'react-router'
+import Header from './components/Header'
+import Home from './layout/Home'
+import Lyrics from './layout/Lyrics'
 
-
-function App() {
-  return (
-    <div className="App">
-      
+export default function App() {
+    return <div className="light-theme">
+        <Header />
+        <div className="body">
+            <Switch>
+                <Route path="/" exact component={Home} />
+                <Route path="/abc" exact component={Lyrics} />
+            </Switch>
+        </div>
     </div>
-  );
 }
-
-export default App;
