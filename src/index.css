@@ -282,13 +282,13 @@ input {
     .card-holder {
         flex-flow: row;
         flex-wrap: wrap;
-        justify-content: space-between;
+        box-sizing: border-box;
     }
 
     .card-container {
+        box-sizing: border-box;
         padding: 15px;
-        width: 18%;
-        min-width: 300px;
+        width: 33.33%;
     }
 
     .card-container .card .image {
@@ -314,5 +314,17 @@ input {
         width: 100%;
         justify-content: space-between;
         margin-top: 10px;
+    }
+}
+
+@media(min-width: 1260px){
+    .card-container {
+        width: 25%;
+    }
+}
+
+@media(min-width: 1360px){
+    .card-container {
+        width: 20%;
     }
 }
