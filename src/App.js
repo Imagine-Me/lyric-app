@@ -9,7 +9,7 @@ export default function App() {
         <div className="body">
             <Switch>
                 <Route path="/" exact component={Home} />
-                <Route path="/abc" exact component={Lyrics} />
+                <Route path="/:artist/:song" exact component={Lyrics} />
             </Switch>
         </div>
     </div>

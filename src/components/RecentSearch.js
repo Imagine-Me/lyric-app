@@ -1,8 +1,10 @@
-export default function RecentSearch() {
+
+
+export default function RecentSearch(props) {
     return <>
         <div className="recent-search-item">
             <div className="item">
-                this iss agaagagagagagaga
+                {props.title}
             </div>
         </div>
     </>
