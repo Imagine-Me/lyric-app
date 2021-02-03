@@ -3,6 +3,8 @@ import SearchBar from "../components/Searchbar";
 import { BASE_URL, STORAGE_ID } from "../constants";
 import Card from '../components/Card'
 
+import Loader from '../components/Loader'
+
 
 export default function Home() {
 
@@ -43,10 +45,12 @@ export default function Home() {
     }
 
     const searchMusic = () => {
+        setResult([])
         fetch(`${BASE_URL}suggest/${keyWord}`)
             .then(response => response.json())
             .then(data => data.data)
             .then(list => setResult(list))
+            .catch(err => setResult([]))
     }
 
 
@@ -84,6 +88,51 @@ export default function Home() {
     }
 
     const favoriteIds = favData.map(value => value.id)
+
+    let searchElement1 = <div>
+        <h3>Results</h3>
+        <div className="text-center">
+            <Loader />
+        </div>
+    </div>
+    if (result.length > 0) {
+        searchElement1 = <div>
+            <h3>Results</h3>
+            <div className="card-holder">
+                {result.map((value, index) => <Card
+                    image={value.album.cover_medium}
+                    artist={value.artist.name}
+                    title={value.title}
+                    id={value.id}
+                    unFavorite={unFavorite}
+                    makeFavorite={makeFavorite}
+                    isFavorite={favoriteIds.includes(value.id)}
+                    key={index} />)}
+            </div>
+        </div>
+    }
+
+    let searchElement2 = <div className="text-center opacity-low">
+        <h1>Lyrics Finder</h1>
+    </div>
+
+    if (favData.length > 0) {
+        searchElement2 = <div>
+            <h3>Favorites</h3>
+            <div className="card-holder">
+                {favData.map((value, index) => <Card
+                    image={value.image}
+                    artist={value.artist}
+                    title={value.title}
+                    id={value.id}
+                    unFavorite={unFavorite}
+                    isFavorite={true}
+                    key={index} />)}
+            </div>
+        </div>
+    }
+
+
     return (
         <div>
             <SearchBar
@@ -91,32 +140,7 @@ export default function Home() {
                 change={onChangeListener}
                 recentData={recentData}
             />
-            {isSearch ? <div>
-                <h3>Results</h3>
-                <div className="card-holder">
-                    {result.map((value, index) => <Card
-                        image={value.album.cover_medium}
-                        artist={value.artist.name}
-                        title={value.title}
-                        id={value.id}
-                        unFavorite={unFavorite}
-                        makeFavorite={makeFavorite}
-                        isFavorite={favoriteIds.includes(value.id)}
-                        key={index} />)}
-                </div>
-            </div> : <div>
-                    <h3>Favorites</h3>
-                    <div className="card-holder">
-                        {favData.map((value, index) => <Card
-                            image={value.image}
-                            artist={value.artist}
-                            title={value.title}
-                            id={value.id}
-                            unFavorite={unFavorite}
-                            isFavorite={true}
-                            key={index} />)}
-                    </div>
-                </div>}
+            {isSearch ? searchElement1 : searchElement2 }
         </div>
     )
 }

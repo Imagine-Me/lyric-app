@@ -142,11 +142,12 @@ input {
     border: 1px solid #ec407a;
 }
 
-.recent-link{
+.recent-link {
     max-width: 24%;
     text-decoration: none;
 }
-.r-title{
+
+.r-title {
     position: absolute;
     top: -20px;
     color: #ec407a;
@@ -201,13 +202,17 @@ input {
 .card-container .card .header-card {
     display: flex;
     align-items: center;
-    width: 60%;
+    flex-grow: 1;
+}
+
+.opacity-low{
+    opacity: 0.3;
 }
 
 .card-container .card .footer {
     display: flex;
     align-items: center;
-    width: 40%;
+    width: 100px;
     justify-content: flex-end;
 }
 
@@ -269,6 +274,14 @@ input {
         flex-direction: row;
     }
 
+    .card-container .card .title-holder .title {
+        text-align: center;
+    }
+
+    .card-container .card .title-holder .artist {
+        text-align: center;
+    }
+
     .search-box .input {
         width: 50%;
     }
@@ -317,13 +330,13 @@ input {
     }
 }
 
-@media(min-width: 1260px){
+@media(min-width: 1260px) {
     .card-container {
         width: 25%;
     }
 }
 
-@media(min-width: 1360px){
+@media(min-width: 1360px) {
     .card-container {
         width: 20%;
     }

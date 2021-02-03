@@ -10,8 +10,8 @@ export default function Card(props) {
 
                 </div>
                 <div className="title-holder">
-                    <div className="title text-center" title={props.title}>{props.title}</div>
-                    <div className="artist text-center" title={props.artist}>{props.artist}</div>
+                    <div className="title" title={props.title}>{props.title}</div>
+                    <div className="artist" title={props.artist}>{props.artist}</div>
                 </div>
             </div>
             <div className="footer">

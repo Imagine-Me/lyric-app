@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 
+import Loader from '../components/Loader'
+
+
 import { BASE_URL, STORAGE_ID } from '../constants'
 
 
 export default function Lyrics(props) {
-    const [lyrics, setLyrics] = useState([])
+    const [lyrics, setLyrics] = useState([<Loader key="0" />])
 
     const { image, id } = props.location.state
     const { artist, song } = props.match.params
@@ -33,7 +36,7 @@ export default function Lyrics(props) {
                     recentSongs.splice(index, 1)
                 }
                 if (recentSongs.length > 3) {
-                    recentSongs.splice(0, 1)
+                    recentSongs.splice(3, 1)
                 }
                 recentSongs.splice(0, 0, recentData)
                 localData.recentSongs = recentSongs
@@ -51,11 +54,12 @@ export default function Lyrics(props) {
 
         localStorage.setItem(STORAGE_ID, JSON.stringify(localData))
 
-        // fetch(`${BASE_URL}v1/${artist}/${song}`)
-        //     .then(response => response.json())
-        //     .then(lyrics => lyrics.lyrics)
-        //     .then(lyrics => lyrics.split('\n'))
-        //     .then(lyrics => setLyrics(lyrics))
+        fetch(`${BASE_URL}v1/${artist}/${song}`)
+            .then(response => response.json())
+            .then(lyrics => lyrics.lyrics)
+            .then(lyrics => lyrics.length === 0 ? [] : lyrics.split('\n'))
+            .then(lyrics => lyrics.map((line, index) => <p key={index}>{line}</p>))
+            .then(lyrics => setLyrics(lyrics))
 
 
         return () => {
@@ -68,7 +72,9 @@ export default function Lyrics(props) {
         <div className="lyric-song">{song}</div>
         <div className="lyric-artist">{artist}</div>
         <div className="lyrics">
-            {lyrics.map((line, index) => <p key={index}>{line}</p>)}
+            {lyrics.length === 0 ? <p>There is an issue in connecting server</p> :
+                lyrics.map(line => line)
+            }
         </div>
     </div>
 }
