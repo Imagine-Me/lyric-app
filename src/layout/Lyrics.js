@@ -65,10 +65,11 @@ export default function Lyrics(props) {
         return () => {
 
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return <div className="container text-center mt-4">
-        <img src={image} width="200" />
+        <img src={image} width="200" alt="album" />
         <div className="lyric-song">{song}</div>
         <div className="lyric-artist">{artist}</div>
         <div className="lyrics">
