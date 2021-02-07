@@ -8,8 +8,8 @@ export default function App() {
         <Header />
         <div className="body">
             <Switch>
-                <Route path="/" exact component={Home} />
                 <Route path="/:artist/:song" exact component={Lyrics} />
+                <Route path="/" component={Home} />
             </Switch>
         </div>
     </div>
