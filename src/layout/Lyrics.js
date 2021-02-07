@@ -5,6 +5,8 @@ import Loader from '../components/Loader'
 
 import { BASE_URL, STORAGE_ID } from '../constants'
 
+import NotFoundImage from '../../assets/not_found.jpeg'
+
 
 export default function Lyrics(props) {
     const [lyrics, setLyrics] = useState([<Loader key="0" />])
@@ -69,7 +71,7 @@ export default function Lyrics(props) {
     }, [])
 
     return <div className="container text-center mt-4">
-        <img src={image} width="200" alt="album" />
+        <img src={image} width="200" alt={NotFoundImage} />
         <div className="lyric-song">{song}</div>
         <div className="lyric-artist">{artist}</div>
         <div className="lyrics">
