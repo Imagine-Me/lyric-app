@@ -5,7 +5,7 @@ import Loader from '../components/Loader'
 
 import { BASE_URL, STORAGE_ID } from '../constants'
 
-import NotFoundImage from '../../assets/not_found.jpeg'
+import NotFoundImage from '../assets/not_found.jpeg'
 
 
 export default function Lyrics(props) {
