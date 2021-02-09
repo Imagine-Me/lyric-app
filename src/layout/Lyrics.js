@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
-
 import Loader from '../components/Loader'
-
-
 import { BASE_URL, STORAGE_ID } from '../constants'
+import { useRecoilState } from 'recoil'
+import { appState } from '../Recoil/appState'
 
 import NotFoundImage from '../assets/not_found.jpeg'
 
 
+
 export default function Lyrics(props) {
     const [lyrics, setLyrics] = useState([<Loader key="0" />])
+
+    const [state, setState] = useRecoilState(appState)
 
     const { image, id } = props.location.state
     const { artist, song } = props.match.params
@@ -23,38 +25,23 @@ export default function Lyrics(props) {
         recentData.id = id
         recentData.artist = artist
 
-        let localData = localStorage.getItem(STORAGE_ID)
-        if (localData) {
-            localData = JSON.parse(localData)
-            let recentSongs = localData.recentSongs
-            if (recentSongs) {
-                let index = -1
-                recentSongs.forEach((element, i) => {
-                    if (element.id === id) {
-                        index = i
-                    }
-                });
-                if (index !== -1) {
-                    recentSongs.splice(index, 1)
-                }
-                if (recentSongs.length > 3) {
-                    recentSongs.splice(3, 1)
-                }
-                recentSongs.splice(0, 0, recentData)
-                localData.recentSongs = recentSongs
-            } else {
-                let recentSongs = []
-                recentSongs.push(recentData)
-                localData.recentSongs = recentSongs
-            }
-        } else {
-            localData = {}
-            let recentSongs = []
-            recentSongs.push(recentData)
-            localData.recentSongs = recentSongs
+        let recentSongs = [...state.recentSongs]
+        recentSongs = recentSongs.filter(song => song.id !== id) //REMOVING SONG IF ALREADY EXISTS
+        recentSongs.push(recentData)
+        if (recentSongs.length > 4) {
+            recentSongs.splice(0, 1)
         }
 
-        localStorage.setItem(STORAGE_ID, JSON.stringify(localData))
+        setState(prevState => {
+            const currentState = {
+                ...prevState,
+                recentSongs
+            }
+            localStorage.setItem(STORAGE_ID, JSON.stringify(currentState))
+            return currentState
+        })
+
+
 
         fetch(`${BASE_URL}v1/${artist}/${song}`)
             .then(response => response.json())

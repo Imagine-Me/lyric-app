@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SearchBar from "../components/Searchbar";
 import { BASE_URL, STORAGE_ID } from "../constants";
 import Card from '../components/Card'
+import { useRecoilState } from 'recoil'
+import { appState } from '../Recoil/appState'
 
 import Loader from '../components/Loader'
 
@@ -12,26 +14,8 @@ export default function Home() {
     const [result, setResult] = useState([])
     const [keyWord, setKeyWord] = useState('')
     const [timer, setTimer] = useState(null)
-    const [favData, setFavData] = useState([])
-    const [recentData, setRecentData] = useState([])
 
-    const local_data = localStorage.getItem(STORAGE_ID)
-
-    useEffect(() => {
-        if (local_data) {
-            let data = JSON.parse(local_data)
-            let favData = data.favorites ?? []
-            setFavData(favData)
-            let recentSongs = data.recentSongs ?? []
-            setRecentData(recentSongs)
-        }
-
-        return () => {
-
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
+    const [state, setState] = useRecoilState(appState)
 
     const onChangeListener = (event) => {
         const value = event.target.value
@@ -63,32 +47,38 @@ export default function Home() {
         data.image = props.image
         data.artist = props.artist
         data.id = props.id
-        const tempData = [...favData]
-        tempData.push(data)
-        let storage_data = {}
-        if (local_data) {
-            storage_data = JSON.parse(local_data)
-        }
-        storage_data.favorites = tempData
-        localStorage.setItem(STORAGE_ID, JSON.stringify(storage_data))
-        setFavData(tempData)
+        const favoriteData = [...state.favoriteData]
+        favoriteData.push(data)
+        setState(prevState => {
+            const currentState = {
+                ...prevState,
+                favoriteData
+            }
+            localStorage.setItem(STORAGE_ID, JSON.stringify(currentState))
+            return currentState
+        })
     }
     const unFavorite = (id) => {
-        const tempData = [...favData]
+        const favoriteData = [...state.favoriteData]
         let deleteIndex = -1
-        tempData.forEach((value, index) => {
+        favoriteData.forEach((value, index) => {
             if (value.id === id) {
                 deleteIndex = index
             }
         })
-        tempData.splice(deleteIndex, 1)
-        let localData = JSON.parse(localStorage.getItem(STORAGE_ID))
-        localData.favorites = tempData
-        localStorage.setItem(STORAGE_ID, JSON.stringify(localData))
-        setFavData(tempData)
+        favoriteData.splice(deleteIndex, 1)
+        setState(prevState => {
+            const currentState = {
+                ...prevState,
+                favoriteData
+            }
+            localStorage.setItem(STORAGE_ID, JSON.stringify(currentState))
+            return currentState
+        })
     }
 
-    const favoriteIds = favData.map(value => value.id)
+    const favoriteIds = state.favoriteData.map(value => value.id)
+    let recentSongs = [...state.recentSongs].reverse()
 
     let searchElement1 = <div>
         <h3>Results</h3>
@@ -117,11 +107,11 @@ export default function Home() {
         <h1>Lyrics Finder</h1>
     </div>
 
-    if (favData.length > 0) {
+    if (state.favoriteData.length > 0) {
         searchElement2 = <div>
             <h3>Favorites</h3>
             <div className="card-holder">
-                {favData.map((value, index) => <Card
+                {state.favoriteData.map((value, index) => <Card
                     image={value.image}
                     artist={value.artist}
                     title={value.title}
@@ -139,9 +129,9 @@ export default function Home() {
             <SearchBar
                 value={keyWord}
                 change={onChangeListener}
-                recentData={recentData}
+                recentData={recentSongs}
             />
-            {isSearch ? searchElement1 : searchElement2 }
+            {isSearch ? searchElement1 : searchElement2}
         </div>
     )
 }
